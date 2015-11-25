@@ -1,0 +1,134 @@
+#!/usr/bin/env ruby
+# Dropsync Util
+# Written by Leo Xuzhang Lin <www.leoxlin.com>
+#
+# This script is licensed under The MIT License (MIT)
+#
+# Copyright (c) 2015 Leo Xuzhang Lin
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+require 'json'
+require 'yaml'
+require 'fileutils'
+require 'pathname'
+
+def prompt(text) print "#{text} "; gets.strip; end
+def promptn(text) print "#{text}\n"; gets.strip; end
+def continue?
+  print "Continue? [yN]: "
+  exit 1 if gets.strip != 'y'
+end
+
+# Parse dropbox info json to get the Dropbox base path
+def get_dropbox_path(home)
+  path = "#{home}/.dropbox/info.json"
+  JSON.parse(File.read(path))['personal']['path']
+rescue
+  nil
+end
+
+# Parse include paths entered
+def parse_include_paths(paths)
+  paths.split(',')
+    .map { |path| path.strip }
+    .select do |path|
+      if path[0, 1] != '.'
+        prompt("'#{path}' is not a dotfile, still include it? [yN]: ") == 'y'
+      else
+        true
+      end
+    end
+end
+
+# Important file paths
+USER_HOME = ENV['HOME'] || prompt('Enter your home path:')
+DROPBOX_BASE = get_dropbox_path(USER_HOME) || prompt('Enter your dropbox base:')
+DROPSYNC_CONFIG = USER_HOME + '/.dropsync'
+
+# Creating a config file if it doesn't exist
+if !File.exist? DROPSYNC_CONFIG
+  puts "You are configuring dropsync for the first time ..."
+  inclu = promptn("Files you want to include (i.e .vimrc, .tmux.conf, .zshrc):")
+  files = parse_include_paths(inclu)
+  puts "\n"
+  puts "You will be syncing the following files to #{DROPBOX_BASE}/.sync"
+  File.open(DROPSYNC_CONFIG, 'w') { |file| file.write(YAML::dump(files)) }
+end
+
+# Reading what to sync from the config file
+sync = YAML.load_file(DROPSYNC_CONFIG)
+
+# Checking if the process for dropbox is alive
+begin
+  pid = File.read("#{USER_HOME}/.dropbox/dropbox.pid").to_i
+  Process.getpgid(pid)
+rescue Errno::ENOENT, Errno::ESRCH
+  puts "Please make sure dropbox is installed and started"
+  exit 1
+end
+
+def link_files(df)
+  dropbox = "#{DROPBOX_BASE}/.sync/#{df}"
+  home = "#{USER_HOME}/#{df}"
+  FileUtils.ln_s(dropbox, home)
+end
+
+# If the dotfile does not exist on either local or dropbox
+def handle_neither_exist(df)
+  puts "#{df} not found locally or on dropsync."
+  puts "We are creating one for you ..."
+  folder = prompt("Is it a folder? [y/N]: ") == 'y'
+  if folder
+    Dir.mkdir("#{DROPBOX_BASE}/.sync/#{df}")
+  else
+    File.open("#{DROPBOX_BASE}/.sync/#{df}", "w") {}
+  end
+  link_files(df)
+end
+
+def handle_local_exist(df)
+  puts "#{df} found locally but not on dropsync."
+  puts "Using local dotfile as dropsync ..."
+  continue?
+  dropbox = "#{DROPBOX_BASE}/.sync/#{df}"
+  home = "#{USER_HOME}/#{df}"
+  FileUtils.mv(home, dropbox)
+  link_files(df)
+end
+
+def handle_local_symlink(df)
+  home = Pathname.new("#{USER_HOME}/#{df}").realpath.to_s
+  if home != "#{DROPBOX_BASE}/.sync/#{df}"
+    puts "#{df} found locally but is symlinked to #{home} instead"
+    puts "Using dropsync version instead ..."
+    FileUtils.rm_rf("#{USER_HOME}/#{df}")
+    link_files(df)
+  end
+end
+
+FileUtils.mkdir_p("#{DROPBOX_BASE}/.sync")
+sync.each do |df|
+  dropbox_exist = File.exist? "#{DROPBOX_BASE}/.sync/#{df}"
+  local_exist = File.exist? "#{USER_HOME}/#{df}"
+  local_symlink = File.symlink? "#{USER_HOME}/#{df}"
+  if !local_exist && !dropbox_exist then handle_neither_exist(df)
+  elsif local_exist && !dropbox_exist then handle_local_exist(df)
+  elsif local_symlink then handle_local_symlink(df)
+  else link_files(df) end
+end
