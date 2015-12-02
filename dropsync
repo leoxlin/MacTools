@@ -122,6 +122,14 @@ def handle_local_symlink(df)
   end
 end
 
+def handle_both_exist(df)
+  puts "#{df} found both locally and on dropsync."
+  puts "Using dropsync version ..."
+  continue?
+  FileUtils.rm_rf("#{USER_HOME}/#{df}")
+  link_files(df)
+end
+
 FileUtils.mkdir_p("#{DROPBOX_BASE}/.sync")
 sync.each do |df|
   dropbox_exist = File.exist? "#{DROPBOX_BASE}/.sync/#{df}"
@@ -130,5 +138,6 @@ sync.each do |df|
   if !local_exist && !dropbox_exist then handle_neither_exist(df)
   elsif local_exist && !dropbox_exist then handle_local_exist(df)
   elsif local_symlink then handle_local_symlink(df)
+  elsif local_exist && dropbox_exist then handle_both_exist(df)
   else link_files(df) end
 end
