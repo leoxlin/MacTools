@@ -23,7 +23,7 @@ If you are on a linux box with no screen
 
 ## Installation
 ```
-curl -o /usr/local/bin/dropsync http://git.io/vRqjH && chmod +x /usr/local/bin/dropsync
+curl -o dropsync http://git.io/vRqjH && chmod +x dropsync
 ```
 
 ## Configuration
