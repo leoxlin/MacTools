@@ -1,0 +1,67 @@
+#!/bin/bash
+set -euo pipefail
+
+CMD='Initialization'
+
+function cleanup {
+  if [[ -z $SUCCESS ]]; then
+    echo ""
+    echo "💀  Failed when $CMD"
+    echo "🚧  Setup log:"
+    cat /tmp/setup.log
+  fi
+  rm -f /tmp/setup.log
+}
+trap cleanup EXIT
+
+function missing() {
+  EXIST=`command -v $1`
+  if [[ -n $EXIST ]]; then
+    echo "1"
+  fi
+}
+
+# Install brew
+CMD='installing brew'
+if [[ -z `missing brew` ]]; then
+  echo "🍻  Installing homebrew"
+  /usr/bin/ruby -e "$(curl -fsSL https://git.io/pVOl)" \
+    >> /tmp/setup.log
+else
+  echo "🍻  Homebrew already installed"
+fi
+
+# Brew adding taps
+CMD='adding taps'
+echo "🚰  Tapping cask versions bundle"
+brew tap 'Homebrew/bundle' --full >> /tmp/setup.log
+brew tap 'caskroom/cask' --full >> /tmp/setup.log
+brew tap 'homebrew/versions' --full >> /tmp/setup.log
+
+# Brew update formulae
+CMD='updating formulae'
+echo "💿  Updating your brew formulae"
+brew update > /tmp/setup.log
+
+# Install and log into mas
+CMD='setting up mas'
+echo "🍎  Setup mas-cli for App Store"
+if [[ -z `missing mas` ]]; then
+  brew install mas
+fi
+if [[ -n `mas account | grep "Not signed in"` ]]; then
+  printf "Apple ID Email: "
+  read APPLE_ID_EMAIL
+  printf "Apple ID Password: "
+  read -s APPLE_ID_PASSWORD
+  mas signin $APPLE_ID_EMAIL $APPLE_ID_PASSWORD >> /tmp/setup.log
+fi
+
+# Installing using bundle
+CMD='installing bundle'
+echo "👜  Running brew bundle"
+if [[ -z `brew bundle check | grep "dependencies are satisfied"` ]]; then
+  brew bundle -v >> /tmp/setup.log
+fi
+
+SUCCESS='1'
