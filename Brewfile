@@ -17,7 +17,7 @@ brew 'ruby-build'
 brew 'rbenv'
 
 # Python
-brew 'python3'
+brew 'python-build'
 brew 'pyenv'
 
 # Casks
