@@ -20,6 +20,11 @@ brew 'rbenv'
 brew 'python-build'
 brew 'pyenv'
 
+# Jvm
+brew 'scala'
+brew 'maven'
+brew 'zinc'
+
 # Casks
 cask 'atom'
 cask 'dropbox'
