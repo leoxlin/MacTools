@@ -32,7 +32,6 @@ cask 'iterm2'
 cask 'spotify'
 
 # App store
-mas 'Alfred', id: 405843582
 mas '1Password', id: 443987910
 mas 'Slack', id: 803453959
 mas 'Sunrise Calendar', id: 886106985
