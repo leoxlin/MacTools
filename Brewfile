@@ -17,7 +17,6 @@ brew 'ruby-build'
 brew 'rbenv'
 
 # Python
-brew 'python-build'
 brew 'pyenv'
 
 # Jvm
