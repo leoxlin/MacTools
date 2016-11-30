@@ -55,6 +55,7 @@ if [[ -n `mas account | grep "Not signed in"` ]]; then
   printf "Apple ID Password: "
   read -s APPLE_ID_PASSWORD
   mas signin $APPLE_ID_EMAIL $APPLE_ID_PASSWORD >> /tmp/setup.log
+  echo ''
 fi
 
 # Installing using bundle
