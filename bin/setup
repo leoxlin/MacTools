@@ -2,6 +2,7 @@
 set -euo pipefail
 
 CMD='Initialization'
+SUCCESS=''
 
 function cleanup {
   if [[ -z $SUCCESS ]]; then
