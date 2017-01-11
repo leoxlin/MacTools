@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
+SCRIPTDIR=$(dirname "$0")
 CMD='Initialization'
 SUCCESS=''
 
@@ -32,17 +33,17 @@ else
   echo "🍻  Homebrew already installed"
 fi
 
+# Brew update formulae
+CMD='updating formulae'
+echo "💿  Updating your brew formulae"
+brew update >> /tmp/setup.log
+
 # Brew adding taps
 CMD='adding taps'
 echo "🚰  Tapping cask versions bundle"
 brew tap 'Homebrew/bundle' --full >> /tmp/setup.log
 brew tap 'caskroom/cask' --full >> /tmp/setup.log
 brew tap 'homebrew/versions' --full >> /tmp/setup.log
-
-# Brew update formulae
-CMD='updating formulae'
-echo "💿  Updating your brew formulae"
-brew update > /tmp/setup.log
 
 # Install and log into mas
 CMD='setting up mas'
@@ -65,5 +66,10 @@ echo "👜  Running brew bundle"
 if [[ -z `brew bundle check | grep "dependencies are satisfied"` ]]; then
   brew bundle -v >> /tmp/setup.log
 fi
+
+# Running dropsync
+CMD='running dropsync'
+echo "⚓  Syncing dotfiles"
+$SCRIPTDIR/dropsync >> /tmp/setup.log
 
 SUCCESS='1'
