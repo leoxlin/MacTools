@@ -17,6 +17,7 @@ brew 'ruby-build'
 brew 'rbenv'
 
 # Python
+brew 'python'
 brew 'pyenv'
 brew 'pyenv-virtualenv'
 
