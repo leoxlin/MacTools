@@ -21,7 +21,6 @@ brew 'pyenv'
 brew 'pyenv-virtualenv'
 
 # Jvm
-brew 'scala'
 brew 'maven'
 brew 'zinc'
 
