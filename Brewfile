@@ -18,6 +18,7 @@ brew 'rbenv'
 
 # Python
 brew 'pyenv'
+brew 'pyenv-virtualenv'
 
 # Jvm
 brew 'scala'
