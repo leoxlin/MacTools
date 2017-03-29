@@ -32,6 +32,7 @@ cask 'dropbox'
 cask 'flux'
 cask 'iterm2'
 cask 'spotify'
+cask 'sequel-pro'
 
 # App store
 mas '1Password', id: 443987910
