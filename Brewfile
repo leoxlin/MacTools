@@ -33,6 +33,7 @@ cask 'flux'
 cask 'iterm2'
 cask 'spotify'
 cask 'sequel-pro'
+cask 'visualvm'
 
 # App store
 mas '1Password', id: 443987910
