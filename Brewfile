@@ -25,6 +25,9 @@ brew 'pyenv-virtualenv'
 brew 'maven'
 brew 'zinc'
 
+# Elixir
+brew 'elixir'
+
 # Casks
 cask 'atom'
 cask 'alfred'
