@@ -28,6 +28,9 @@ brew 'zinc'
 # Elixir
 brew 'elixir'
 
+# Go
+brew 'go'
+
 # Casks
 cask 'atom'
 cask 'alfred'
