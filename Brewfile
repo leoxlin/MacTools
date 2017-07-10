@@ -46,6 +46,10 @@ cask 'visualvm'
 cask 'virtualbox'
 cask 'yourkit-java-profiler'
 
+# Kubernetes
+brew 'kubectl'
+cask 'minikube'
+
 # App store
 mas '1Password', id: 443987910
 mas 'Slack', id: 803453959
