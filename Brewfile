@@ -43,6 +43,7 @@ cask 'iterm2'
 cask 'spotify'
 cask 'sequel-pro'
 cask 'visualvm'
+cask 'virtualbox'
 cask 'yourkit-java-profiler'
 
 # App store
