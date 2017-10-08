@@ -32,6 +32,9 @@ brew 'elixir'
 # Go
 brew 'go'
 
+# Platform
+brew 'openshift-cli'
+
 # Casks
 cask 'atom'
 cask 'alfred'
