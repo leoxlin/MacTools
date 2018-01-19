@@ -33,7 +33,6 @@ brew 'elixir'
 brew 'go'
 
 # Platform
-brew 'openshift-cli'
 cask 'google-cloud-sdk'
 
 # Casks
