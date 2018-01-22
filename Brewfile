@@ -50,6 +50,7 @@ cask 'spotify'
 cask 'sequel-pro'
 cask 'visualvm'
 cask 'virtualbox'
+cask 'wireshark'
 cask 'yourkit-java-profiler'
 
 # Kubernetes
