@@ -32,6 +32,9 @@ brew 'elixir'
 # Go
 brew 'go'
 
+# Node
+brew 'node'
+
 # Platform
 cask 'google-cloud-sdk'
 
