@@ -71,4 +71,29 @@ CMD='running dropsync'
 echo "⚓  Syncing dotfiles"
 $SCRIPTDIR/dropsync >> /tmp/setup.log
 
+# Installing modules
+CMD='installing modules'
+echo "📦  Installing modules"
+for MODULE in `find $SCRIPTDIR/../modules/. -mindepth 1 -maxdepth 1 -type d`
+do
+  MODULE_NAME=$(basename $MODULE)
+  echo "🗂️  Installing module - $MODULE_NAME"
+
+  if [[ ! -f "$MODULE/setup" ]]; then
+    echo "You need to define an install script for '$MODULE_NAME'"
+    exit 1
+  fi
+
+  # Move into each module folder
+  cd $MODULE
+
+  # Optionally install brew bundles
+  if [[ -f "$MODULE/Brewfile" ]]; then
+    cd $MODULE && brew bundle -v >> /tmp/setup.log
+  fi
+
+  # Execute module setup
+  ./setup >> /tmp/setup.log
+done
+
 SUCCESS='1'
