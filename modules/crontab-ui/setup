@@ -2,4 +2,4 @@
 
 echo "Installing crontab-ui"
 
-// TODO: Implement crontab ui installation
+# TODO: Implement crontab ui installation
