@@ -77,7 +77,7 @@ echo "📦  Installing modules"
 for MODULE in `find $SCRIPTDIR/../modules/. -mindepth 1 -maxdepth 1 -type d`
 do
   MODULE_NAME=$(basename $MODULE)
-  echo "⚙️  Installing module - $MODULE_NAME"
+  echo "  ⚙️  Installing module - $MODULE_NAME"
 
   if [[ ! -f "$MODULE/setup" ]]; then
     echo "You need to define an install script for '$MODULE_NAME'"
