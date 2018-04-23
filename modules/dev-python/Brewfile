@@ -1,0 +1,5 @@
+brew 'python'
+brew 'pyenv'
+brew 'pyenv-virtualenv'
+
+cask 'pycharm-ce'

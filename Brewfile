@@ -14,51 +14,20 @@ brew 'tmux'
 brew 'vim'
 brew 'watch'
 
-# Ruby
-brew 'ruby-build'
-brew 'rbenv'
-
-# Python
-brew 'python'
-brew 'pyenv'
-brew 'pyenv-virtualenv'
-
-# Jvm
-brew 'maven'
-brew 'zinc'
-
-# Elixir
-brew 'elixir'
-
-# Go
-brew 'go'
-
-# Platform
-cask 'google-cloud-sdk'
-
 # Casks
 cask 'atom'
 cask 'alfred'
 cask 'dropbox'
-cask 'docker'
 cask 'flux'
-cask 'karabiner-elements'
-cask 'intellij-idea-ce'
 cask 'iterm2'
-cask 'pycharm-ce'
+cask 'karabiner-elements'
 cask 'spotify'
 cask 'sequel-pro'
-cask 'visualvm'
 cask 'virtualbox'
 cask 'wireshark'
-cask 'yourkit-java-profiler'
-
-# Kubernetes
-brew 'kubectl'
-cask 'minikube'
 
 # App store
 mas '1Password', id: 443987910
 mas 'Evernote', id: 406056744
 mas 'Slack', id: 803453959
-mas 'Textual 7', id: 1262957439
+mas 'Wunderlist', id: 410628904

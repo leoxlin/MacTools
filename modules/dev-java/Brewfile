@@ -1,0 +1,6 @@
+brew 'maven'
+brew 'zinc'
+
+cask 'intellij-idea-ce'
+cask 'yourkit-java-profiler'
+cask 'visualvm'

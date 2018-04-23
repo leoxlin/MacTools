@@ -1,0 +1,4 @@
+brew 'kubectl'
+cask 'docker'
+cask 'minikube'
+cask 'google-cloud-sdk'

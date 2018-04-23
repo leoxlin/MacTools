@@ -79,21 +79,15 @@ do
   MODULE_NAME=$(basename $MODULE)
   echo "  ⚙️  Installing module - $MODULE_NAME"
 
-  if [[ ! -f "$MODULE/setup" ]]; then
-    echo "You need to define an install script for '$MODULE_NAME'"
-    exit 1
-  fi
-
-  # Move into each module folder
-  cd $MODULE
-
   # Optionally install brew bundles
   if [[ -f "$MODULE/Brewfile" ]]; then
     cd $MODULE && brew bundle -v >> /tmp/setup.log
   fi
 
-  # Execute module setup
-  ./setup >> /tmp/setup.log
+  # Optionally execute module setup
+  if [[ -f "$MODULE/setup" ]]; then
+    cd $MODULE && ./setup >> /tmp/setup.log
+  fi
 done
 
 SUCCESS='1'
