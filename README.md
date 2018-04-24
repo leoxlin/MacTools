@@ -18,7 +18,3 @@ Extensible with easily defined modules
 $ touch ./modules/module-name/setup
 $ touch ./modules/module-name/Brewfile
 ```
-
-## Pretty outputs
-
-![img](docs/sample-output.png)
