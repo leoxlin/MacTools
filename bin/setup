@@ -48,7 +48,7 @@ brew tap 'caskroom/cask' --full >> /tmp/setup.log
 CMD='setting up mas'
 echo "🍎  Setup mas-cli for App Store"
 if [[ -z `missing mas` ]]; then
-  brew install mas
+  brew install mas >> /tmp/setup.log
 fi
 if [[ -n `mas account | grep "Not signed in"` ]]; then
   printf "Apple ID Email: "
