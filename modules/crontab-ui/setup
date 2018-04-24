@@ -1,5 +1,0 @@
-#!/bin/bash
-
-echo "Installing crontab-ui"
-
-# TODO: Implement crontab ui installation
