@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+echo "Installing default profile"
+
+if [[ -f $MODULE_DIR/default.json ]]; then
+  cp $MODULE_DIR/default.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/default.json
+else
+  echo "Cannot find the default profile"
+  exit 1
+fi

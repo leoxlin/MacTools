@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-SCRIPTDIR=$(dirname "$0")
+SCRIPT_DIR=$(dirname "$0")
 CMD='Initialization'
 SUCCESS=''
 
@@ -63,30 +63,35 @@ fi
 CMD='installing bundle'
 echo "👜  Running brew bundle"
 if [[ -z `brew bundle check | grep "dependencies are satisfied"` ]]; then
-  brew bundle -v >> /tmp/setup.log
+  brew bundle \
+    --file="$SCRIPT_DIR/../Brewfile"\
+    -v >> /tmp/setup.log
 fi
 
 # Running dropsync
 CMD='running dropsync'
 echo "⚓  Syncing dotfiles"
-$SCRIPTDIR/dropsync >> /tmp/setup.log
+$SCRIPT_DIR/dropsync >> /tmp/setup.log
 
 # Installing modules
 CMD='installing modules'
 echo "📦  Installing modules"
-for MODULE in `find $SCRIPTDIR/../modules/. -mindepth 1 -maxdepth 1 -type d`
+for MODULE in `find $SCRIPT_DIR/../modules/. -mindepth 1 -maxdepth 1 -type d`
 do
-  MODULE_NAME=$(basename $MODULE)
+  export MODULE_NAME=$(basename $MODULE)
+  export MODULE_DIR=$SCRIPT_DIR/../modules/$MODULE_NAME
   echo "  ⚙️  Installing module - $MODULE_NAME"
 
   # Optionally install brew bundles
-  if [[ -f "$MODULE/Brewfile" ]]; then
-    cd $MODULE && brew bundle -v >> /tmp/setup.log
+  if [[ -f "$MODULE_DIR/Brewfile" ]]; then
+    brew bundle \
+      --file="$MODULE_DIR/Brewfile" \
+      -v >> /tmp/setup.log
   fi
 
   # Optionally execute module setup
-  if [[ -f "$MODULE/setup" ]]; then
-    cd $MODULE && ./setup >> /tmp/setup.log
+  if [[ -f "$MODULE_DIR/setup" ]]; then
+    $MODULE_DIR/setup > /tmp/setup.log
   fi
 done
 
