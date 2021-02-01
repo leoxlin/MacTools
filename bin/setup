@@ -42,7 +42,7 @@ brew update >> /tmp/setup.log
 CMD='adding taps'
 echo "🚰  Adding required brew taps"
 brew tap 'Homebrew/bundle' --full >> /tmp/setup.log
-brew tap 'caskroom/cask' --full >> /tmp/setup.log
+brew tap 'Homebrew/cask' --full >> /tmp/setup.log
 
 # Install and log into mas
 CMD='setting up mas'
