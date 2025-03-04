@@ -27,7 +27,7 @@ function missing() {
 CMD='installing brew'
 if [[ -z `missing brew` ]]; then
   echo "🍻  Installing homebrew"
-  /usr/bin/ruby -e "$(curl -fsSL https://git.io/pVOl)" \
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" \
     >> /tmp/setup.log
 else
   echo "🍻  Homebrew already installed"
@@ -37,12 +37,6 @@ fi
 CMD='updating formulae'
 echo "💿  Updating your brew formulae"
 brew update >> /tmp/setup.log
-
-# Brew adding taps
-CMD='adding taps'
-echo "🚰  Adding required brew taps"
-brew tap 'Homebrew/bundle' --full >> /tmp/setup.log
-brew tap 'Homebrew/cask' --full >> /tmp/setup.log
 
 # Install and log into mas
 CMD='setting up mas'

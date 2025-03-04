@@ -13,19 +13,8 @@ brew 'sqlite'
 brew 'tmux'
 brew 'vim'
 brew 'watch'
+brew 'pre-commit'
 
 # Casks
-cask 'atom'
-cask 'flux'
 cask 'karabiner-elements'
-cask 'spotify'
-cask 'sequel-pro'
-cask 'rectangle'
-cask 'virtualbox'
-cask 'wireshark'
 
-# App store
-mas '1Password', id: 443987910
-mas 'Evernote', id: 406056744
-mas 'Slack', id: 803453959
-mas 'Simplenote', id: id692867256
